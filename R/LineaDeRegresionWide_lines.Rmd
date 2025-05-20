@@ -1,0 +1,22 @@
+## Filtramos solo los datos del dataset 'wide_lines'
+
+```{r}
+wide_lines_data <- datasaurus_dozen %>%
+  filter(dataset == "wide_lines")
+```
+
+## Graficamos la línea de regresión
+
+```{r}
+ggplot(wide_lines_data, aes(x = x, y = y)) +
+  geom_point(color = "#F862DA", alpha = 1, size = 2) + 
+  geom_smooth(method = "lm", se = FALSE, color = "blue", size = 1) +
+  labs(title = "Línea de Regresión: 'wide_lines'") +
+  theme_minimal()
+```
+
+
+
+
+
+
