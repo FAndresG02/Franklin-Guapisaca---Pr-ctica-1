@@ -1,0 +1,83 @@
+---
+title: "PracticaMarkdown"
+author: "Franklin Guapisaca"
+date: "2025-04-03"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Cargamos las Librerias necesarias
+
+```{r}
+library(tidyverse)
+library(datasauRus)
+library(dplyr)
+library(ggplot2)
+```
+
+## Mostramos el resumen del dataset
+
+```{r}
+datasaurus_dozen %>%
+  group_by(dataset) %>%
+  summarize(
+    mean_x = mean(x),
+    mean_y = mean(y),
+    std_dev_x = sd(x),
+    std_dev_y = sd(y),
+    corr_x_y = cor(x, y)
+  )
+```
+
+## Mostramos los gráficos de dispersión de los 13 dataset
+
+```{r}
+ggplot(datasaurus_dozen, aes(x = x, y = y, colour = dataset)) +
+  geom_point() +
+  theme_void() +
+  theme(legend.position = "none") +
+  facet_wrap(~dataset, ncol = 3)
+```
+
+## Filtramos solo los datos del dataset wide_lines
+
+```{r}
+wide_lines_data <- datasaurus_dozen %>%
+  filter(dataset == "wide_lines")
+```
+
+## Ajustamos el modelo de regresión lineal con lm()
+
+```{r}
+modelo_wide_lines <- lm(y ~ x, data = wide_lines_data)
+summary(modelo_wide_lines)
+```
+
+## Graficamos la línea de regresión usando ggplot
+
+```{r}
+ggplot(wide_lines_data, aes(x = x, y = y)) +
+  geom_point(color = "#F862DA", alpha = 0.8, size = 2) + 
+  geom_smooth(method = "lm", se = FALSE, color = "blue", size = 1.2) +
+  labs(
+    title = "Línea de regresión wide_lines",
+    subtitle = paste("Pendiente:", round(coef(modelo_wide_lines)[2], 2),
+                     "| Intercepto:", round(coef(modelo_wide_lines)[1], 2)),
+    x = "X",
+    y = "Y"
+  ) +
+  theme_minimal()
+```
+
+## Línea de regresíon echa a mano
+
+```{r}
+knitr::include_graphics("C:/Users/andre/Downloads/Practica 1 - Franklin Guapisaca/R/RegresionLinealEchaAMano.jpg")
+```
+
+
